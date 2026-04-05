@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our 1st Anniversary ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin:0;
+    font-family:'Poppins', sans-serif;
+    background:linear-gradient(135deg,#020617,#0f172a);
+    color:white;
+    overflow-x:hidden;
+}
+
+/* PASSWORD SCREEN */
+#lock {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card {
+    background:rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    max-width:400px;
+}
+
+input {
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    margin-top:15px;
+    text-align:center;
+    width:100%;
+}
+
+/* MAIN */
+#main {
+    display:none;
+    padding:20px;
+    text-align:center;
+}
+
+.section {
+    margin:25px auto;
+    max-width:900px;
+}
+
+/* MAP */
+.map {
+    position:relative;
+}
+
+.map img {
+    width:100%;
+    border-radius:15px;
+}
+
+.pin {
+    position:absolute;
+    width:22px;
+    height:22px;
+    background:#ff4d6d;
+    border-radius:50%;
+    box-shadow:0 0 20px #ff4d6d;
+    cursor:pointer;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%{transform:scale(1);}
+    50%{transform:scale(1.6);}
+    100%{transform:scale(1);}
+}
+
+/* Thailand Pin */
+.th{ top:55%; left:70%; }
+/* Sri Lanka Pin */
+.sl{ top: 45%; left: 70%; }
+
+/* GALLERY */
+#gallery {
+    position:fixed;
+    inset:0;
+    display:none;
+    background:black;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+#gallery img {
+    width:85%;
+    max-width:500px;
+    border-radius:15px;
+    transition:opacity 0.5s ease;
+}
+
+#gallery h2{
+    margin-bottom:20px;
+    font-size:1.5rem;
+}
+
+/* BUTTON */
+button {
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    background:linear-gradient(to right,#ff4d6d,#ff758f);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+/* HEARTS */
+.heart {
+    position:fixed;
+    top:-10px;
+    animation:fall linear forwards;
+}
+@keyframes fall {
+    to{transform:translateY(110vh); opacity:0;}
+}
+
+/* PROPOSAL */
+#proposal {
+    position:fixed;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.85);
+}
+
+.proposal-card {
+    background:white;
+    color:black;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+}
+
+/* TIMER */
+#timer {
+    margin-top:15px;
+    font-size:18px;
+}
+
+/* MUSIC BUTTON */
+#musicToggle {
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(5px);
+    border:1px solid white;
+    cursor:pointer;
+    z-index:999;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lock">
+<div class="card">
+<h2>Enter Our Special Date 💕</h2>
+<p style="font-size:12px; opacity:0.7;">Hint: The day everything started</p>
+<input type="password" id="pass" placeholder="••••">
+<button onclick="checkPass()">Unlock ❤️</button>
+</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<div class="section">
+<h1>Happy 1st Anniversary Hashi 💖</h1>
+<p>Every step we take together, every place we visit… my heart is happiest with you ❤️</p>
+<div id="timer"></div>
+</div>
+
+<div class="section">
+<h2>Our Special Memory 🌍</h2>
+
+<div class="map">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg">
+<div class="pin th" onclick="openGallery('th')"></div>
+<div class="pin sl" onclick="openGallery('sl')"></div>
+</div>
+
+<p>Tap a country to see our memory ❤️</p>
+</div>
+
+<div class="section">
+<button onclick="showProposal()">Final Surprise 💍</button>
+</div>
+
+</div>
+
+<!-- GALLERY -->
+<div id="gallery" onclick="closeGallery()">
+<h2 id="gtitle"></h2>
+<img id="gimg">
+</div>
+
+<!-- PROPOSAL -->
+<div id="proposal">
+<div class="proposal-card">
+<h2>Hashi ❤️</h2>
+<p>1 year down… forever to go 💖</p>
+<button onclick="sendWhatsApp()">Yes Forever 💕</button>
+</div>
+</div>
+
+<audio id="music" loop>
+<source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<div id="musicToggle" onclick="toggleMusic()">🎵</div>
+
+<script>
+let music=document.getElementById("music");
+let musicBtn=document.getElementById("musicToggle");
+
+/* MUSIC TOGGLE */
+function toggleMusic(){
+    if(music.paused){ music.play(); musicBtn.innerText="🎶"; }
+    else { music.pause(); musicBtn.innerText="🎵"; }
+}
+
+/* PASSWORD */
+function checkPass(){
+    if(document.getElementById("pass").value=="0604"){
+        document.getElementById("lock").style.display="none";
+        document.getElementById("main").style.display="block";
+        music.play().catch(()=>{});
+        startHearts();
+    } else { alert("Wrong date 😜"); }
+}
+
+/* TIMER */
+const start=new Date("2025-04-06");
+setInterval(()=>{
+    let now=new Date();
+    let d=Math.floor((now-start)/(1000*60*60*24));
+    let h=Math.floor((now-start)/(1000*60*60)%24);
+    let m=Math.floor((now-start)/(1000*60)%60);
+    document.getElementById("timer").innerHTML =
+    `${d} Days • ${h} Hours • ${m} Minutes ❤️`;
+},1000);
+
+/* HEARTS */
+function startHearts(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*100+"vw";
+        h.style.animationDuration=(Math.random()*3+3)+"s";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },300);
+}
+
+/* GALLERY */
+const galleries={
+    th:{title:"Thailand 🇹🇭❤️ (Our First Trip)",images:["one.jpeg","two.jpeg","three.jpeg"]},
+    sl:{title:"Sri Lanka 🇱🇰✨ (Our Next Journey)",images:["sl1.jpeg","sl2.jpeg"]}
+};
+let index=0;
+let current=[];
+let slideInterval=null;
+
+function openGallery(country){
+    let data=galleries[country];
+    current=data.images;
+    index=0;
+
+    document.getElementById("gtitle").innerText=data.title;
+    document.getElementById("gallery").style.display="flex";
+
+    showImage();
+
+    if(slideInterval) clearInterval(slideInterval);
+
+    slideInterval=setInterval(()=>{
+        index=(index+1)%current.length;
+        showImage();
+    },4000); // slower change
+}
+
+function showImage(){
+    let img=document.getElementById("gimg");
+    img.style.opacity=0;
+    setTimeout(()=>{
+        img.src=current[index];
+        img.style.opacity=1;
+    },300);
+}
+
+function closeGallery(){
+    document.getElementById("gallery").style.display="none";
+    if(slideInterval) clearInterval(slideInterval);
+}
+
+/* PROPOSAL */
+function showProposal(){ document.getElementById("proposal").style.display="flex"; }
+
+function sendWhatsApp(){
+    window.open("https://wa.me/94770576860?text=Happy 1st Anniversary ❤️ I love you forever 💍");
+}
+
+</script>
+</body>
+</html>
